@@ -42,7 +42,9 @@ def get_player_stats(seasons):
         
         # BeautifulSoup을 사용하여 HTML을 읽고 pandas로 변환
         df = pd.read_html(StringIO(table_html))[0]
-    
+        
+        # csv 형식으로 저장
+        df.to_csv("nba_stats_" + season + ".csv")
     # WebDriver 종료
     driver.quit()
 
@@ -94,3 +96,6 @@ def get_player_salary(seasons):
         
         # 컬럼 이름 변경
         final_df.columns = ['NAME', 'TEAM', 'SALARY']
+        
+        # csv 형식으로 저장
+        final_df.to_csv("nba_stats_" + season + ".csv")

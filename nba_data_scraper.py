@@ -1,10 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
-import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from io import StringIO
+import pandas as pd
+import requests
+import os
 
 # Selenium을 사용하여 NBA 선수들의 개인 지표 크롤링
 # 매개변수 seasons: 리스트 형태 예시 ['2024-25', '2023-24']
@@ -43,8 +44,10 @@ def get_player_stats(seasons):
         # BeautifulSoup을 사용하여 HTML을 읽고 pandas로 변환
         df = pd.read_html(StringIO(table_html))[0]
         
+        file_name = f'stats_data/nba_stats_{season}.csv'
+        
         # csv 형식으로 저장
-        df.to_csv("nba_stats_" + season + ".csv")
+        df.to_csv(file_name)
     # WebDriver 종료
     driver.quit()
 
@@ -97,5 +100,25 @@ def get_player_salary(seasons):
         # 컬럼 이름 변경
         final_df.columns = ['NAME', 'TEAM', 'SALARY']
         
+        # 앞부분 (YYYY에서 YYYY-1 생성)
+        start_season = str(int(season) - 1)
+        # 뒷부분 (YY만 추출)
+        end_season = season[2:]
+        
+        # csv 파일명
+        file_name = f'salary_data/nba_salary_{start_season}-{end_season}.csv'
+        
         # csv 형식으로 저장
-        final_df.to_csv("nba_stats_" + season + ".csv")
+        final_df.to_csv(file_name)
+
+stats_season = ['2023-24', '2022-23', '2021-22', '2020-21', '2019-20', '2018-19', '2017-18', 
+                '2016-17', '2015-16', '2014-15', '2013-14', '2012-13', '2011-12', '2010-11']
+salary_season = [str(i) for i in range(2025, 2011, -1)]
+
+if not os.path.exists("salary_data"):
+        os.makedirs("salary_data")
+if not os.path.exists("stats_data"):
+        os.makedirs("stats_data")
+        
+#get_player_stats(stats_season)
+#get_player_salary(salary_season)

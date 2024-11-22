@@ -6,6 +6,7 @@ from io import StringIO
 import pandas as pd
 import requests
 import os
+import threading
 
 # Selenium을 사용하여 NBA 선수들의 개인 지표 크롤링
 # 매개변수 seasons: 리스트 형태 예시 ['2024-25', '2023-24']
@@ -19,8 +20,8 @@ def get_player_stats(seasons):
     seasonType = "Regular+Season"  # 정규 시즌
     
     # 주어진 시즌에 대해 반복
-    for season_data in seasons:
-        season = season_data  # 시즌 변수 설정
+    for season in seasons:
+        print(f'{season} 시즌 선수 지표 데이터 크롤링 중...')
         
         # URL 생성 (선수 지표 조회 페이지)
         url = "https://www.nba.com/stats/leaders?"
@@ -47,15 +48,18 @@ def get_player_stats(seasons):
         file_name = f'stats_data/nba_stats_{season}.csv'
         
         # csv 형식으로 저장
-        df.to_csv(file_name)
+        df.to_csv(file_name, index=False)
     # WebDriver 종료
     driver.quit()
+    
+    print("NBA 선수 개인 지표 크롤링 완료")
 
 # BeautifulSoup을 사용하여 NBA 선수들의 급여 크롤링
 # 매개변수 seasons: 리스트 형태 예시 ['2024', '2023']
 def get_player_salary(seasons):
     # 주어진 시즌에 대해 반복
     for season in seasons:
+        print(f'{season} 시즌 선수 연봉 데이터 크롤링 중...')
         all_data = []  # 모든 데이터를 저장할 리스트
         
         # 기본 URL 설정 (시즌별 급여 정보)
@@ -91,14 +95,11 @@ def get_player_salary(seasons):
         final_df = pd.concat(all_data, ignore_index=True)
         
         # 중복된 행 제거
-        # 'RK', 'NAME', 'TEAM', 'SALARY' 컬럼을 기준으로 중복된 데이터를 제거하고, 첫 번째 항목만 남깁니다.
+        # 'RK', 'NAME', 'TEAM', 'SALARY' 컬럼이 중복 됨으로 중복 제거
         final_df = final_df.drop_duplicates(subset=[0, 1, 2, 3], keep=False, ignore_index=True)
         
-        # 불필요한 첫 번째 열(0) 삭제
-        final_df = final_df.drop(0, axis=1)
-        
         # 컬럼 이름 변경
-        final_df.columns = ['NAME', 'TEAM', 'SALARY']
+        final_df.columns = ['RK', 'NAME', 'TEAM', 'SALARY']
         
         # 앞부분 (YYYY에서 YYYY-1 생성)
         start_season = str(int(season) - 1)
@@ -109,16 +110,18 @@ def get_player_salary(seasons):
         file_name = f'salary_data/nba_salary_{start_season}-{end_season}.csv'
         
         # csv 형식으로 저장
-        final_df.to_csv(file_name)
-
-stats_season = ['2023-24', '2022-23', '2021-22', '2020-21', '2019-20', '2018-19', '2017-18', 
-                '2016-17', '2015-16', '2014-15', '2013-14', '2012-13', '2011-12', '2010-11']
-salary_season = [str(i) for i in range(2025, 2011, -1)]
+        final_df.to_csv(file_name, index=False)
+    print("NBA 선수 연봉 크롤링 완료")
+    
+stats_season = ('2023-24', '2022-23', '2021-22', '2020-21', '2019-20', '2018-19', '2017-18', 
+                '2016-17', '2015-16', '2014-15', '2013-14', '2012-13', '2011-12', '2010-11')
+salary_season = (str(i) for i in range(2025, 2011, -1))
 
 if not os.path.exists("salary_data"):
         os.makedirs("salary_data")
 if not os.path.exists("stats_data"):
         os.makedirs("stats_data")
-        
-#get_player_stats(stats_season)
-#get_player_salary(salary_season)
+
+
+threading.Thread(target=get_player_stats, args=(stats_season,)).start()
+threading.Thread(target=get_player_salary, args=(salary_season,)).start()

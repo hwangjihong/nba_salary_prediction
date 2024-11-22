@@ -2,7 +2,7 @@
 
 ## 데이터 수집 방법
 
-이 프로젝트에서는 **Selenium**과 **BeautifulSoup**을 사용하여 웹 크롤링을 통해 데이터를 수집합니다. Selenium은 동적인 웹 페이지에서 데이터를 수집하는 데 사용되며, BeautifulSoup은 정적인 HTML을 파싱하는 데 사용됩니다. 수집된 데이터들은 csv 형식으로 저장합니다.
+이 프로젝트에서는 **Selenium**과 **BeautifulSoup**을 사용하여 웹 크롤링을 통해 데이터를 수집합니다. Selenium은 동적인 웹 페이지에서 데이터를 수집하는 데 사용되며, BeautifulSoup은 정적인 HTML을 파싱하는 데 사용됩니다. 수집된 데이터들은 nba_stats_yyyy-yy.csv, nba_salary_yyyy-yy.csv 형식으로 저장합니다.
 
 ### 사용된 웹 크롤링 기술
 

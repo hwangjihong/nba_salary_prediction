@@ -16,7 +16,7 @@ def get_player_stats(seasons):
     driver = webdriver.Chrome()
     driver.implicitly_wait(10)  # 웹 페이지 로딩 대기 시간 설정
 
-    perMode = "Totals"  # 게임 전체 지표
+    perMode = "PerGame"  # 게임 수 평균
     statCategory = "PTS"  # PTS 순으로 정렬 (득점)
     seasonType = "Regular+Season"  # 정규 시즌
 
@@ -52,7 +52,7 @@ def get_player_stats(seasons):
         # BeautifulSoup을 사용하여 HTML을 읽고 pandas로 변환
         df = pd.read_html(StringIO(table_html))[0]
 
-        file_name = f"stats_data/nba_stats_{season}.csv"
+        file_name = f"./stats_data/nba_stats_{season}.csv"
 
         # csv 형식으로 저장
         df.to_csv(file_name, index=False)
@@ -121,7 +121,7 @@ def get_player_salary(seasons):
         end_season = season[2:]
 
         # csv 파일명
-        file_name = f"salary_data/nba_salary_{start_season}-{end_season}.csv"
+        file_name = f"./salary_data/nba_salary_{start_season}-{end_season}.csv"
 
         # csv 형식으로 저장
         final_df.to_csv(file_name, index=False)
@@ -147,4 +147,4 @@ if not os.path.exists("stats_data"):
 
 
 threading.Thread(target=get_player_stats, args=(stats_season,)).start()
-threading.Thread(target=get_player_salary, args=(salary_season,)).start()
+# threading.Thread(target=get_player_salary, args=(salary_season,)).start()

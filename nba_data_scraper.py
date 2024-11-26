@@ -113,9 +113,9 @@ def get_player_salary(seasons):
         final_df.to_csv(file_name, index=False)
     print("NBA 선수 연봉 크롤링 완료")
     
-stats_season = ('2023-24', '2022-23', '2021-22', '2020-21', '2019-20', '2018-19', '2017-18', 
-                '2016-17', '2015-16', '2014-15', '2013-14', '2012-13', '2011-12', '2010-11')
-salary_season = (str(i) for i in range(2025, 2011, -1))
+stats_season = ('2023-24', '2022-23', '2021-22', '2020-21',
+                '2019-20', '2018-19', '2017-18', '2016-17')
+salary_season = (str(i) for i in range(2025, 2017, -1))
 
 if not os.path.exists("salary_data"):
         os.makedirs("salary_data")

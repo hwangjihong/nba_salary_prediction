@@ -25,9 +25,10 @@ def get_player_stats(seasons):
         print(f"{season} 시즌 선수 지표 데이터 크롤링 중...")
 
         # URL 생성 (선수 지표 조회 페이지)
-        url = "https://www.nba.com/stats/leaders?"
+        # url = "https://www.nba.com/stats/leaders?"
+        url = "https://www.nba.com/stats/players/traditional?"
         url += "PerMode=" + perMode
-        url += "&StatCategory=" + statCategory
+        # url += "&StatCategory=" + statCategory
         url += "&Season=" + season
         url += "&SeasonType=" + seasonType
 
@@ -47,6 +48,7 @@ def get_player_stats(seasons):
             By.XPATH,
             '//*[@id="__next"]/div[2]/div[2]/div[3]/section[2]/div/div[2]/div[3]/table',
         )
+
         table_html = table_element.get_attribute("outerHTML")
 
         # BeautifulSoup을 사용하여 HTML을 읽고 pandas로 변환
@@ -137,8 +139,13 @@ stats_season = (
     "2018-19",
     "2017-18",
     "2016-17",
+    "2015-16",
+    "2014-15",
+    "2013-14",
+    "2012-13",
+    "2011-12",
 )
-salary_season = (str(i) for i in range(2025, 2017, -1))
+salary_season = (str(i) for i in range(2025, 2012, -1))
 
 if not os.path.exists("salary_data"):
     os.makedirs("salary_data")

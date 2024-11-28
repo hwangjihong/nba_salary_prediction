@@ -154,4 +154,4 @@ if not os.path.exists("stats_data"):
 
 
 threading.Thread(target=get_player_stats, args=(stats_season,)).start()
-# threading.Thread(target=get_player_salary, args=(salary_season,)).start()
+threading.Thread(target=get_player_salary, args=(salary_season,)).start()

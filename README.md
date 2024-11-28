@@ -13,9 +13,9 @@
 
 ## 데이터 크롤링 사이트
 
-### 2. [NBA 선수 개인 지표](https://www.nba.com/stats/leaders)
+### 2. [NBA 선수 개인 지표](https://www.nba.com/stats/players/traditional)
 
-- **URL**: [https://www.nba.com/stats/leaders](https://www.nba.com/stats/leaders)
+- **URL**: [https://www.nba.com/stats/players/traditional](https://www.nba.com/stats/players/traditional)
 - **정보**: 이 사이트는 NBA 선수들의 개인 지표를 제공합니다. 득점(PTS), 리바운드, 어시스트 등 다양한 통계를 확인할 수 있습니다.
 - **데이터 수집 방법**:
     - `Selenium`을 사용하여 동적 페이지에서 데이터를 자동으로 로드합니다.
